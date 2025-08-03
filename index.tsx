@@ -1,11 +1,4 @@
-
-
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  ReactNode
-} from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
   HashRouter,
@@ -19,10 +12,10 @@ import {
 // --- HELPER HOOKS & COMPONENTS ---
 
 const useIntersectionObserver = (options ? : IntersectionObserverInit): [(node: HTMLElement | null) => void, boolean] => {
-  const [ref, setRef] = useState < HTMLElement | null > (null);
-  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [ref, setRef] = React.useState < HTMLElement | null > (null);
+  const [isIntersecting, setIsIntersecting] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!ref) {
       return;
     }
@@ -166,9 +159,9 @@ const CircuitBreakerIcon = ({ className }: { className: string }) => (
 
 
 const HeroAnimation = () => {
-    const containerRef = useRef<HTMLDivElement>(null);
+    const containerRef = React.useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
+    React.useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
 
@@ -230,7 +223,7 @@ const HeroAnimation = () => {
                 </g>
                 <g className="hero-anim-orbit-3">
                     <g transform="translate(250, 430)">
-                        <path className="hero-icon" stroke="url(#plug-grad)" filter="url(#icon-glow)" d="M38.54,23.h-7.08v-6h-9v6H15.46a2.49,2.49,0,0,0-2.5,2.5V36.27a2.5,2.5,0,0,0,2.5,2.5h23.08a2.5,2.5,0,0,0,2.5-2.5V25.5A2.49,2.49,0,0,0,38.54,23.h0Zm-14-3h3v-6h3v6h-6Zm0,12.23h-3V32.2h3Zm6,0h-3V32.2h3Zm6,0h-3V32.2h3Z" transform="scale(1.2)" />
+                        <path className="hero-icon" stroke="url(#plug-grad)" filter="url(#icon-glow)" d="M38.54,23 h-7.08v-6h-9v6H15.46a2.49,2.49,0,0,0-2.5,2.5V36.27a2.5,2.5,0,0,0,2.5,2.5h23.08a2.5,2.5,0,0,0,2.5-2.5V25.5A2.49,2.49,0,0,0,38.54,23 h0Zm-14-3h3v-6h3v6h-6Zm0,12.23h-3V32.2h3Zm6,0h-3V32.2h3Zm6,0h-3V32.2h3Z" transform="scale(1.2)" />
                     </g>
                 </g>
             </svg>
@@ -817,8 +810,8 @@ const Home = () => {
     );
 };
 
-const ParallaxServiceCard = ({ icon, title, text, delay }: { icon: ReactNode, title: string, text: string, delay: number }) => {
-    const cardRef = useRef<HTMLDivElement>(null);
+const ParallaxServiceCard = ({ icon, title, text, delay }: { icon: React.ReactNode, title: string, text: string, delay: number }) => {
+    const cardRef = React.useRef<HTMLDivElement>(null);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         const card = cardRef.current;
@@ -854,11 +847,11 @@ const ParallaxServiceCard = ({ icon, title, text, delay }: { icon: ReactNode, ti
 };
 
 const useCountUp = (endValue: number, duration: number, isIntersecting: boolean) => {
-    const [count, setCount] = useState(0);
+    const [count, setCount] = React.useState(0);
     const frameRate = 1000 / 60;
     const totalFrames = Math.round(duration / frameRate);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (!isIntersecting) return;
         let frame = 0;
         const counter = setInterval(() => {
@@ -1052,9 +1045,9 @@ const RadialBenefitsGraph = ({ title, items }: { title: string, items: { label: 
 const ServiceDetailPage = () => {
     const { servicePath } = useParams();
     const data = serviceData[servicePath || ''];
-    const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+    const [openAccordion, setOpenAccordion] = React.useState<string | null>(null);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (data && data.sections.length > 0) {
             setOpenAccordion(data.sections[0].title);
         } else {
@@ -1173,7 +1166,7 @@ interface AccordionItemProps {
 }
 
 const AccordionItem = ({ title, children, isOpen, onClick }: AccordionItemProps) => {
-    const contentRef = useRef<HTMLDivElement>(null);
+    const contentRef = React.useRef<HTMLDivElement>(null);
 
     return (
         <div className={`accordion-item ${isOpen ? 'open' : ''}`}>
@@ -1209,7 +1202,7 @@ const YouTubeEmbed = ({ embedId }: YouTubeEmbedProps) => (
 );
 
 const About = () => {
-    const [openAccordion, setOpenAccordion] = useState<string | null>(aboutContent.sections[0].title);
+    const [openAccordion, setOpenAccordion] = React.useState<string | null>(aboutContent.sections[0].title);
 
     const handleAccordionClick = (title: string) => {
         setOpenAccordion(openAccordion === title ? null : title);
@@ -1293,17 +1286,17 @@ interface Review {
 }
 
 const ReviewsSlideshow = ({ reviews }: { reviews: Review[] }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const [currentIndex, setCurrentIndex] = React.useState(0);
+    const timeoutRef = React.useRef<number | null>(null);
     const numReviews = reviews.length;
 
     const resetTimeout = () => {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
 
-    useEffect(() => {
+    React.useEffect(() => {
         resetTimeout();
-        timeoutRef.current = setTimeout(() => 
+        timeoutRef.current = window.setTimeout(() => 
             setCurrentIndex(prev => (prev + 1) % numReviews), 
         5000);
         return () => resetTimeout();
@@ -1402,10 +1395,10 @@ const ReviewsSlideshow = ({ reviews }: { reviews: Review[] }) => {
 // --- LAYOUT COMPONENTS ---
 
 const Header = () => {
-    const [menuOpen, setMenuOpen] = useState(false);
-    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [menuOpen, setMenuOpen] = React.useState(false);
+    const [dropdownOpen, setDropdownOpen] = React.useState(false);
 
-    useEffect(() => {
+    React.useEffect(() => {
         document.body.classList.toggle('menu-open', menuOpen);
     }, [menuOpen]);
     
@@ -1481,9 +1474,9 @@ const Footer = () => {
 };
 
 const MouseFollower = () => {
-    const followerRef = useRef<HTMLDivElement>(null);
+    const followerRef = React.useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
+    React.useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
             if (followerRef.current) {
                 followerRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
